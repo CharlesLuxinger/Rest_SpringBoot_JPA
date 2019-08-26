@@ -2,6 +2,7 @@ package com.charlesluxinger.money.api.resource;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,13 +37,15 @@ public class CategoriaResource {
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
 				.buildAndExpand(categoriaInserted.getId()).toUri();
-		
+
 		return ResponseEntity.created(uri).body(categoriaInserted);
-		
+
 	}
-	
+
 	@GetMapping("/{id}")
-	public Categoria findById(@PathVariable Long id) {
-		  return this.categoriaRepository.findById(id).orElse(null);
+	public ResponseEntity<Categoria> findById(@PathVariable Long id) {
+		Optional<Categoria> categoria = this.categoriaRepository.findById(id);
+
+		return (categoria.isPresent() ? ResponseEntity.ok(categoria.get()) : ResponseEntity.notFound().build());
 	}
 }
