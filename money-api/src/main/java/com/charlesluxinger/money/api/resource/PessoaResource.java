@@ -71,6 +71,10 @@ public class PessoaResource {
 		return ResponseEntity.ok(pessoaSaved);
 	}
 
-
+	@PutMapping("/{id}/status")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateStatus(@PathVariable long id, @RequestBody Boolean status) {
+		pessoaService.updateStatus(id, status);
+	}
 
 }

@@ -15,10 +15,20 @@ public class PessoaService {
 	private PessoaRepository pessoaRepository;
 
 	public Pessoa update(Long id, Pessoa pessoa) {
-		Pessoa pessoaSaved = pessoaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		Pessoa pessoaSaved = findById(id);
 
 		BeanUtils.copyProperties(pessoa, pessoaSaved, "id");
 
 		return pessoaRepository.save(pessoaSaved);
+	}
+
+	public void updateStatus(long id, Boolean status) {
+		Pessoa pessoaSaved = findById(id);
+		pessoaSaved.setStatus(status);
+		pessoaRepository.save(pessoaSaved);
+	}
+
+	private Pessoa findById(long id) {
+		return pessoaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
 	}
 }
