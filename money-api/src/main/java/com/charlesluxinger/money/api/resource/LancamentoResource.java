@@ -25,11 +25,12 @@ import com.charlesluxinger.money.api.event.InsertResourceEvent;
 import com.charlesluxinger.money.api.exceptionshandler.MoneyExceptionsHandler.Erro;
 import com.charlesluxinger.money.api.model.Lancamento;
 import com.charlesluxinger.money.api.repository.LancamentoRepository;
+import com.charlesluxinger.money.api.repository.filter.LancamentoFilter;
 import com.charlesluxinger.money.api.service.LancamentoService;
 import com.charlesluxinger.money.api.service.exception.PessoaInexistenteOuInativaException;
 
 @RestController
-@RequestMapping("/lancamento")
+@RequestMapping("/lancamentos")
 public class LancamentoResource {
 
 	@Autowired
@@ -45,9 +46,14 @@ public class LancamentoResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Lancamento> findAll() {
-		return lancamentoRepository.findAll();
+	public List<Lancamento> filter(LancamentoFilter lancamentoFilter) {
+		return lancamentoRepository.filter(lancamentoFilter);
 	}
+
+	//	@GetMapping
+	//	public List<Lancamento> findAll() {
+	//		return lancamentoRepository.findAll();
+	//	}
 
 	@PostMapping
 	public ResponseEntity<Lancamento> insert(@Valid @RequestBody Lancamento lancamento, HttpServletResponse response) {
