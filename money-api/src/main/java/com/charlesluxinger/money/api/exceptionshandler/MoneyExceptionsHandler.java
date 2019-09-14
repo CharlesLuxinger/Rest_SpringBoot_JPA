@@ -63,8 +63,7 @@ public class MoneyExceptionsHandler extends ResponseEntityExceptionHandler {
 		return erros;
 	}
 
-	@SuppressWarnings("unused")
-	private static class Erro {
+	public static class Erro {
 
 		private String messageUser;
 		private String messageDeveloper;
