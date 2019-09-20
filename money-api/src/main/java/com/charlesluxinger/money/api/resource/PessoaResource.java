@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class PessoaResource {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Pessoa> insert(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
 		Pessoa pessoaInserted = pessoaRepository.save(pessoa);
 
@@ -53,6 +55,7 @@ public class PessoaResource {
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public ResponseEntity<Pessoa> findById(@PathVariable Long id) {
 		Optional<Pessoa> pessoa = this.pessoaRepository.findById(id);
 
@@ -61,11 +64,13 @@ public class PessoaResource {
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_PESSOA') and #oauth2.hasScope('write')")
 	public void remove(@PathVariable long id) {
 		pessoaRepository.deleteById(id);
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Pessoa> update(@PathVariable long id, @Valid @RequestBody Pessoa pessoa) {
 		Pessoa pessoaSaved = pessoaService.update(id, pessoa);
 		return ResponseEntity.ok(pessoaSaved);
@@ -73,8 +78,8 @@ public class PessoaResource {
 
 	@PutMapping("/{id}/status")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_PESSOA') and #oauth2.hasScope('write')")
 	public void updateStatus(@PathVariable long id, @RequestBody Boolean status) {
 		pessoaService.updateStatus(id, status);
 	}
-
 }
