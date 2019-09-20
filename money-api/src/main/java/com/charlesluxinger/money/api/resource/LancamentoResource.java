@@ -31,6 +31,7 @@ import com.charlesluxinger.money.api.exceptionshandler.MoneyExceptionsHandler.Er
 import com.charlesluxinger.money.api.model.Lancamento;
 import com.charlesluxinger.money.api.repository.LancamentoRepository;
 import com.charlesluxinger.money.api.repository.filter.LancamentoFilter;
+import com.charlesluxinger.money.api.repository.projection.ResumoLancamento;
 import com.charlesluxinger.money.api.service.LancamentoService;
 import com.charlesluxinger.money.api.service.exception.PessoaInexistenteOuInativaException;
 
@@ -53,7 +54,15 @@ public class LancamentoResource {
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public Page<Lancamento> filter(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		System.out.println("********");
 		return lancamentoRepository.filter(lancamentoFilter, pageable);
+	}
+
+	@GetMapping(params = "resume")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
+	public Page<ResumoLancamento> resume(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		System.out.println("##########");
+		return lancamentoRepository.resume(lancamentoFilter, pageable);
 	}
 
 	//	@GetMapping
