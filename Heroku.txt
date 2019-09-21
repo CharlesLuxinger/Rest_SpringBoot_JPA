@@ -1,0 +1,7 @@
+https://moneyhoney-api.herokuapp.com/ | https://git.heroku.com/moneyhoney-api.git
+
+0. Login
+	> heroku login
+
+1. Criar aplicação
+	> heroku create nomeapi
